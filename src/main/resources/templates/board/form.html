@@ -1,7 +1,7 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="fragments/common :: head('게시판')">
+<head th:replace="~{fragments/common :: head('게시판')}">
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -15,8 +15,7 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top" th:replace="fragments/common :: menu('board')">
-
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top" th:replace="~{fragments/common :: menu('board')}">
     </nav>
 
     <div class="container">
@@ -39,23 +38,31 @@
                     내용 에러 메시지
             </div>
             <div class="text-right">
-                <a type="button" class="btn btn-primary" th:href="@{/board/list}">취소</a>
-                <button type="submit" class="btn btn-primary">확인</button>
+                <a class="btn btn-primary my-2" th:href="@{/board/list}">취소</a>
+                <button type="button" class="btn btn-primary my-2" sec:authorize="hasRole('ROLE_ADMIN')" th:onclick="|deleteBoard(*{id})|">삭제</button>
+                <button type="submit" class="btn btn-primary my-2">확인</button>
             </div>
         </form>
     </div>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-        crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
-        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
-        crossorigin="anonymous"></script>
+    <footer th:replace="~{fragments/common :: footer}"></footer>
+    
+    <script>
+        function deleteBoard(id) {
+            //DELETE /api/boards/{id}
+            $.ajax({
+                url: '/api/boards/' + id,
+                type: 'DELETE',
+                success: function(result) {
+                    console.log('result', result);
+                    alert('삭제했습니다.');
+                    window.location.href = '/board/list';
+                }
+            });
+        }
+    </script>
 </body>
 
 </html>

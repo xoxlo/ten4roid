@@ -1,5 +1,7 @@
 package com.goodboy.ten4roid.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -13,6 +15,8 @@ public class Role {
     private long id;
 
     private String name;
+
+    @JsonIgnore
     @ManyToMany(mappedBy = "roles")
     private List<User> users;
 }
