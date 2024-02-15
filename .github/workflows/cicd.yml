@@ -12,6 +12,7 @@ jobs:
     steps:
     - name: Set up SSH
       run: |
+        sudo mkdir -p ~/.ssh
         echo "${{ secrets.SPRING_BOOT_KEY }}" > ~/.ssh/id_rsa
         chmod 400 ~/.ssh/id_rsa
         ssh-keyscan ${{ secrets.HOST }} >> ~/.ssh/known_hosts
