@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 11.2.2-MariaDB)
 # Database: mydb
-# Generation Time: 2024-02-15 09:31:50 +0000
+# Generation Time: 2024-02-15 09:35:52 +0000
 # ************************************************************
 
 
@@ -22,6 +22,8 @@
 
 # Dump of table board
 # ------------------------------------------------------------
+CREATE DATABASE mydb;
+USE mydb;
 
 DROP TABLE IF EXISTS `board`;
 
