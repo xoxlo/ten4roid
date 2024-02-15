@@ -1,0 +1,36 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [ "master" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Set up SSH
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SPRING_BOOT_KEY }}" > ~/.ssh/id_rsa
+        chmod 400 ~/.ssh/id_rsa
+        ssh-keyscan ${{ secrets.HOST }} >> ~/.ssh/known_hosts
+        chmod 600 ~/.ssh/known_hosts
+
+    - name: Build & Test
+      run: |
+        ssh ${{ secrets.SSH_USER }}@${{ secrets.HOST }} '
+          cd ten4roid &&
+          git pull &&
+          ./mvnw clean package &&     
+          sudo cp target/ten4roid-1.0.0.jar /var/ten4roid/ten4roid-1.0.0.jar
+        '
+
+    - name: Restart
+      run: |
+        ssh ${{ secrets.SSH_USER }}@${{ secrets.HOST }} 'sudo systemctl restart ten4roid'
+
+      # ssh 세팅
+      # scp 파일 전송
+      # 서버 재시작
