@@ -30,7 +30,3 @@ jobs:
     - name: Restart
       run: |
         ssh ${{ secrets.SSH_USER }}@${{ secrets.HOST }} 'sudo systemctl restart ten4roid'
-
-      # ssh 세팅
-      # scp 파일 전송
-      # 서버 재시작
