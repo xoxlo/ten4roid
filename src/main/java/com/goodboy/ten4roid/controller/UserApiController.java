@@ -1,12 +1,17 @@
 package com.goodboy.ten4roid.controller;
 
+import com.goodboy.ten4roid.mapper.UserMapper;
 import com.goodboy.ten4roid.model.Board;
+import com.goodboy.ten4roid.model.QUser;
 import com.goodboy.ten4roid.model.User;
 import com.goodboy.ten4roid.repository.UserRepository;
+import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.juli.logging.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.thymeleaf.util.StringUtils;
 
 import java.util.List;
@@ -19,13 +24,26 @@ class UserApiController {
     @Autowired
     private UserRepository repository;
 
+    @Autowired
+    private UserMapper userMapper;
+
     @GetMapping("/users")
-    List<User> all(@RequestParam(required = false) String method, @RequestParam(required = false) String text) {
-        List<User> users = null;
+    Iterable<User> all(@RequestParam(required = false) String method, @RequestParam(required = false) String text) {
+        Iterable<User> users = null;
         if("query".equals(method)) {
             users = repository.findByUsernameQuery(text);
         } else if("nativeQuery".equals(method)) {
             users = repository.findByUsernameNativeQuery(text);
+        } else if("querydsl".equals(method)) {
+            QUser user = QUser.user;
+            Predicate predicate = user.username.contains(text);
+            users = repository.findAll(predicate);
+        } else if("querydslCustom".equals(method)) {
+            users = repository.findByUsernameCustom(text);
+        } else if("jdbc".equals(method)) {
+            users = repository.findByUsernameJdbc(text);
+        } else if("mybatis".equals(method)) {
+            users = userMapper.getUsers(text);
         } else {
             users = repository.findAll();
         }
