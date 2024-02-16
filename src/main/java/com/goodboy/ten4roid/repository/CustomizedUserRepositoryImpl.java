@@ -9,15 +9,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class CustomizedUserRepositoryImpl implements CustomizedUserRepository {
+public class CustomizedUserRepositoryImpl  implements CustomizedUserRepository {
     @PersistenceContext
     private EntityManager em;
+
     @Autowired
     JdbcTemplate jdbcTemplate;
+
     @Override
-    public List <User> findByUsernameCustom(String username) {
+    public List<User> findByUsernameCustom(String username) {
         QUser qUser = QUser.user;
         JPAQuery<?> query = new JPAQuery<Void>(em);
         List<User> users = query.select(qUser)
