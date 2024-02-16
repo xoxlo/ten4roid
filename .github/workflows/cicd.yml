@@ -23,7 +23,7 @@ jobs:
           ssh ${{ secrets.SSH_USER }}@${{ secrets.HOST }} '
             cd ten4roid &&
             git stash && git pull origin master && git stash pop &&
-            ./mvnw clean package &&     
+            ./mvnw clean package &&
             sudo cp target/ten4roid-1.0.0.jar /var/ten4roid/ten4roid-1.0.0.jar
           '
 
