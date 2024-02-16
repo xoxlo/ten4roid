@@ -5,7 +5,7 @@ on:
     branches: [ "master" ]
 
 jobs:
-  depl:
+  deploy:
 
     runs-on: ubuntu-latest
 
@@ -13,9 +13,9 @@ jobs:
     - name: Set up SSH
       run: |
         mkdir -p ~/.ssh
-         echo "${{ secrets.SPRING_BOOT_KEY }}" > ~/.ssh/id_rsa
-         chmod 400 ~/.ssh/id_rsa
-         ssh-keyscan ${{ secrets.HOST }} >> ~/.ssh/known_hosts
+        echo "${{ secrets.SPRING_BOOT_KEY }}" > ~/.ssh/id_rsa
+        chmod 400 ~/.ssh/id_rsa
+        ssh-keyscan ${{ secrets.HOST }} >> ~/.ssh/known_hosts
         chmod 600 ~/.ssh/known_hosts
 
     - name: Build & Test
