@@ -6,14 +6,9 @@ on:
 
 jobs:
   deploy:
-
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/labeler@v2
-        with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          
     - name: Set up SSH
       run: |
         mkdir -p ~/.ssh
@@ -27,10 +22,26 @@ jobs:
         ssh ${{ secrets.SSH_USER }}@${{ secrets.HOST }} '
           cd ten4roid &&
           git pull &&
-          mvn clean package &&     
-          sudo cp target/ten4roid-1.0.0.jar /var/ten4roid/ten4roid-1.0.0.jar
+          mvn clean package
+        '
+
+    - name: Copy JAR
+      run: |
+        ssh ${{ secrets.SSH_USER }}@${{ secrets.HOST }} '
+          sudo cp ten4roid/target/ten4roid-1.0.0.jar /var/ten4roid/ten4roid-1.0.0.jar
         '
 
     - name: Restart
       run: |
         ssh ${{ secrets.SSH_USER }}@${{ secrets.HOST }} 'sudo systemctl restart ten4roid'
+
+    - name: Use GitHub Token
+      uses: actions/setup-java@v2
+      with:
+        java-version: '17'
+        distribution: 'adopt'
+        repository: 'maven'
+        server-id: 'github'
+        settings-path: '~/.m2/settings.xml'
+        server-username: '${{ github.actor }}'
+        server-password: ${{ secrets.TOKEN }}
