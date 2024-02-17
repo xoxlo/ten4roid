@@ -34,14 +34,3 @@ jobs:
     - name: Restart
       run: |
         ssh ${{ secrets.SSH_USER }}@${{ secrets.HOST }} 'sudo systemctl restart ten4roid'
-
-    - name: Use GitHub Token
-      uses: actions/setup-java@v2
-      with:
-        java-version: '17'
-        distribution: 'adopt'
-        repository: 'maven'
-        server-id: 'github'
-        settings-path: '~/.m2/settings.xml'
-        server-username: '${{ github.actor }}'
-        server-password: ${{ secrets.TOKEN }}
