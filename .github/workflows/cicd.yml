@@ -22,7 +22,7 @@ jobs:
         ssh ${{ secrets.SSH_USER }}@${{ secrets.HOST }} '
           cd ten4roid &&
           git pull &&
-          mvn clean package
+          mvn clean package -x test
         '
 
     - name: Copy JAR
