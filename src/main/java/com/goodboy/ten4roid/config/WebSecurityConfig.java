@@ -32,7 +32,7 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable);
         http.authorizeHttpRequests((requests) -> requests
-                .requestMatchers("/", "/account/register", "/css/**", "/api/**").permitAll()
+                .requestMatchers("/", "/account/register", "/css/**", "/api/**", "/img/**").permitAll()
                 .anyRequest().authenticated()
         );
         http.formLogin((form) -> form
