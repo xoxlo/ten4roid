@@ -23,7 +23,7 @@
 
 <body class="text-center">
     <form class="form-signin" th:action="@{/account/register}" method="post">
-        <a th:href="@{/}"><img class="mb-4" src="/img/logo1.png" weight="120" height="199" alt=""></a>
+        <a th:href="@{/}"><img class="mb-4" src="/img/logo1.png" width="120" height="199" alt=""></a>
         <h1 class="h3 mb-3 font-weight-normal">회원가입</h1>
         <div th:if="${param.error}" class="alert alert-danger" role="alert">
           Invalid username and password.
